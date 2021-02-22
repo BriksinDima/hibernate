@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
 import org.hibernate.cfg.Configuration;
+import ru.home.entity.Role;
 import ru.home.entity.User;
 
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ public class HibernateRunner {
                     .lastname("Ivanov")
                     .birthDate(LocalDate.of(2001, 1, 19))
                     .age(22)
+                    .role(Role.ADMIN)
                     .build();
             session.save(user);
             session.getTransaction().commit();
