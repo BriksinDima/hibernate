@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.Test;
+import ru.home.entity.Birthday;
 import ru.home.entity.User;
 
 import javax.persistence.Column;
@@ -22,8 +23,7 @@ class HibernateRunnerTest {
                 .username("sffsadf.gma.ru")
                 .firstname("Ivan")
                 .lastname("Ivanov")
-                .birthDate(LocalDate.of(2001, 1, 19))
-                .age(22)
+                .birthDate(new Birthday(LocalDate.of(2001, 1, 19)))
                 .build();
 
         String sql = "INSERT INTO %s (%s) values (%s)";
