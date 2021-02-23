@@ -1,9 +1,11 @@
 package ru.home.entity;
 
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 import ru.home.converter.BirthdayConverter;
 
 import javax.persistence.Column;
@@ -32,4 +34,7 @@ public class User {
     private Birthday birthDate;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Type(type= "jsonb")
+    private String info;
 }

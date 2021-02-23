@@ -1,5 +1,6 @@
 package ru.home;
 
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
@@ -17,6 +18,7 @@ public class HibernateRunner {
         Configuration configuration = new Configuration();
         configuration.configure();
         configuration.addAttributeConverter(new BirthdayConverter());
+        configuration.registerTypeOverride(new JsonBinaryType());
 //        configuration.setPhysicalNamingStrategy(new CamelCaseToUnderscoresNamingStrategy());
         try (SessionFactory sessionFactory = configuration.buildSessionFactory();
              Session session = sessionFactory.openSession()) {
@@ -25,6 +27,7 @@ public class HibernateRunner {
                     .username("sffsadf.gma.ru")
                     .firstname("Ivan")
                     .lastname("Ivanov")
+                    .info("{\"name\": \"Ivan\"}")
                     .birthDate(new Birthday(LocalDate.of(2001, 1, 19)))
                     .role(Role.ADMIN)
                     .build();
