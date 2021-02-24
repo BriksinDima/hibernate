@@ -23,6 +23,9 @@ public class HibernateRunner {
         try (SessionFactory sessionFactory = configuration.buildSessionFactory();
              Session session = sessionFactory.openSession()) {
             session.beginTransaction();
+            // session.evict(user); Удалить из 1 уровня кэша конкретную сущность
+//            session.clear(); очистить весь кэш 1 уровня
+            // session.flush();  Если хотим синхронизировать изменения сделанные в сущности с базой данных.
 //            User user = User.builder()
 //                    .username("sffsadf.gma.ru")
 //                    .firstname("Ivan")
