@@ -29,8 +29,6 @@ public class HibernateRunner {
 
                 // session2.refresh(usr); update usr <- refreshedUser
                 // session2.merge(usr); update urs -> refreshUser
-
-
                 session2.getTransaction().commit();
             }
         }
