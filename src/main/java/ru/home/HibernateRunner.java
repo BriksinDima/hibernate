@@ -1,43 +1,38 @@
 package ru.home;
 
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
-import org.hibernate.cfg.Configuration;
-import ru.home.converter.BirthdayConverter;
-import ru.home.entity.Birthday;
-import ru.home.entity.Role;
 import ru.home.entity.User;
-
-import java.time.LocalDate;
+import ru.home.util.HibernateUtil;
 
 public class HibernateRunner {
 
     public static void main(String[] args) {
-        Configuration configuration = new Configuration();
-        configuration.configure();
-        configuration.addAttributeConverter(new BirthdayConverter());
-        configuration.registerTypeOverride(new JsonBinaryType());
-//        configuration.setPhysicalNamingStrategy(new CamelCaseToUnderscoresNamingStrategy());
-        try (SessionFactory sessionFactory = configuration.buildSessionFactory();
-             Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            // session.evict(user); Удалить из 1 уровня кэша конкретную сущность
-//            session.clear(); очистить весь кэш 1 уровня
-            // session.flush();  Если хотим синхронизировать изменения сделанные в сущности с базой данных.
-//            User user = User.builder()
-//                    .username("sffsadf.gma.ru")
-//                    .firstname("Ivan")
-//                    .lastname("Ivanov")
-//                    .info("{\"name\": \"Ivan\"}")
-//                    .birthDate(new Birthday(LocalDate.of(2001, 1, 19)))
-//                    .role(Role.ADMIN)
-//                    .build();
-//            session.save(user);
-            User user = session.get(User.class, "ivan@gmail.com");
+        User usr = User.builder()
+                .username("ivan@gmal.com")
+                .lastname("Ivanov")
+                .firstname("Ivan")
+                .build();
 
-            session.getTransaction().commit();
+        try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory()) {
+            try (Session session1 = sessionFactory.openSession()) {
+                session1.beginTransaction();
+
+                session1.saveOrUpdate(usr);
+                session1.getTransaction().commit();
+            }
+
+            try (Session session2 = sessionFactory.openSession()) {
+                session2.beginTransaction();
+
+                usr.setFirstname("Sveta");
+
+                // session2.refresh(usr); update usr <- refreshedUser
+                // session2.merge(usr); update urs -> refreshUser
+
+
+                session2.getTransaction().commit();
+            }
         }
     }
 }
