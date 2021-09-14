@@ -1,22 +1,25 @@
 package ru.home;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.home.entity.PersonalInfo;
 import ru.home.entity.User;
 import ru.home.util.HibernateUtil;
 
+@Slf4j
 public class HibernateRunner {
-
-    private static final Logger log = LoggerFactory.getLogger(HibernateRunner.class);
 
     public static void main(String[] args) {
         User usr = User.builder()
                 .username("ivan@gmal.com")
-                .lastname("Ivanov")
-                .firstname("Ivan")
+                .personalInfo(PersonalInfo.builder()
+                        .lastname("Ivanov")
+                        .firstname("Ivan")
+                        .build())
                 .build();
         log.info("Uses entity is in transient state, object: {}", usr.getUsername());
 
@@ -31,13 +34,6 @@ public class HibernateRunner {
                 session1.getTransaction().commit();
             }
 
-            try (Session session2 = sessionFactory.openSession()) {
-                session2.beginTransaction();
-                usr.setFirstname("Sveta");
-                // session2.refresh(usr); update usr <- refreshedUser
-                // session2.merge(usr); update urs -> refreshUser
-                session2.getTransaction().commit();
-            }
         }
     }
 }

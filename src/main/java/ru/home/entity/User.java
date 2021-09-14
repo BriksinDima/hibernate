@@ -10,6 +10,7 @@ import ru.home.converter.BirthdayConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -26,15 +27,13 @@ import java.time.LocalDate;
 public class User {
     @Id
     private String username;
-    private String firstname;
-    private String lastname;
 
-    @Convert(converter = BirthdayConverter.class)
-    @Column(name="birth_date")
-    private Birthday birthDate;
+    @Embedded
+    private PersonalInfo personalInfo;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Type(type= "jsonb")
+    @Type(type = "jsonb")
     private String info;
 }
